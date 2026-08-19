@@ -2,6 +2,8 @@ name: Build Android APK
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 permissions:
   contents: write
@@ -26,6 +28,7 @@ jobs:
           name: aljana-1234-levels-apk
           path: aljana-1234-levels.apk
       - name: Publish APK release
+        if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "build-${GITHUB_RUN_NUMBER}" aljana-1234-levels.apk --title "الجنة 1234 Levels" --notes "Android APK" --latest
